@@ -1,0 +1,14 @@
+C:\Users\kudre\OneDrive\Masaüstü\alfalsfkal\contracts\target\release\deps\serde-813fabf68e312275.d: C:\Users\kudre\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\lib.rs C:\Users\kudre\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\integer128.rs C:\Users\kudre\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\mod.rs C:\Users\kudre\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\de.rs C:\Users\kudre\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\ser.rs C:\Users\kudre\OneDrive\Masaüstü\alfalsfkal\contracts\target\release\build\serde-33e83d8ac9e8a0ff\out/private.rs
+
+C:\Users\kudre\OneDrive\Masaüstü\alfalsfkal\contracts\target\release\deps\libserde-813fabf68e312275.rlib: C:\Users\kudre\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\lib.rs C:\Users\kudre\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\integer128.rs C:\Users\kudre\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\mod.rs C:\Users\kudre\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\de.rs C:\Users\kudre\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\ser.rs C:\Users\kudre\OneDrive\Masaüstü\alfalsfkal\contracts\target\release\build\serde-33e83d8ac9e8a0ff\out/private.rs
+
+C:\Users\kudre\OneDrive\Masaüstü\alfalsfkal\contracts\target\release\deps\libserde-813fabf68e312275.rmeta: C:\Users\kudre\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\lib.rs C:\Users\kudre\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\integer128.rs C:\Users\kudre\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\mod.rs C:\Users\kudre\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\de.rs C:\Users\kudre\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\ser.rs C:\Users\kudre\OneDrive\Masaüstü\alfalsfkal\contracts\target\release\build\serde-33e83d8ac9e8a0ff\out/private.rs
+
+C:\Users\kudre\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\lib.rs:
+C:\Users\kudre\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\integer128.rs:
+C:\Users\kudre\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\mod.rs:
+C:\Users\kudre\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\de.rs:
+C:\Users\kudre\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\serde-1.0.228\src\private\ser.rs:
+C:\Users\kudre\OneDrive\Masaüstü\alfalsfkal\contracts\target\release\build\serde-33e83d8ac9e8a0ff\out/private.rs:
+
+# env-dep:OUT_DIR=C:\\Users\\kudre\\OneDrive\\Masaüstü\\alfalsfkal\\contracts\\target\\release\\build\\serde-33e83d8ac9e8a0ff\\out
