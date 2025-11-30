@@ -3,7 +3,7 @@
  * Prediction Market Contract Interaction
  */
 
-import StellarSdk from 'stellar-sdk';
+import * as StellarSdk from 'stellar-sdk';
 import { signTx } from './freighter';
 
 export const SOROBAN_CONFIG = {
@@ -16,13 +16,16 @@ export const SOROBAN_CONFIG = {
   networkPassphrase: 'Test SDF Network ; September 2015',
   
   // XLM token address on testnet
-  xlmTokenAddress: 'CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABSC4',
+  xlmTokenAddress: 'GBJPVNGQEJAGJUPY3FQUXNHJOPSDT7VY4ELWG4NGX6MV227I3QI27GC3',
   
   // Native XLM on Soroban
-  nativeXlm: 'CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABSC4',
+  nativeXlm: 'ec32fb795cfe65c3f749f60d195a654301a5389d479361e29de376615b88efc6',
+  
+  // Betting pool wallet (receives bets)
+  bettingPoolAddress: process.env.NEXT_PUBLIC_ADMIN_ADDRESS || 'GBJPVNGQEJAGJUPY3FQUXNHJOPSDT7VY4ELWG4NGX6MV227I3QI27GC3',
 };
 
-const server = new StellarSdk.Server(SOROBAN_CONFIG.horizonUrl);
+const server = new (StellarSdk as any).Horizon.Server(SOROBAN_CONFIG.horizonUrl);
 
 /**
  * Check if contract is deployed and configured
@@ -42,7 +45,7 @@ export async function placeBetOnContract(
   networkPassphrase: string
 ): Promise<string> {
   if (!SOROBAN_CONFIG.contractAddress) {
-    throw new Error('Soroban contract address not configured. Deploy the contract first.');
+    throw new Error('Contract not deployed');
   }
 
   try {
@@ -52,19 +55,28 @@ export async function placeBetOnContract(
     console.log(`  Prediction: ${prediction ? 'YES' : 'NO'}`);
     
     const sourceAccount = await server.loadAccount(userPublicKey);
+    console.log(`Account loaded: seq=${sourceAccount.sequence}`);
     
-    // Build a Soroban contract invocation transaction
-    // Note: This is a simplified version. Full implementation requires:
-    // 1. Contract ABI parsing
-    // 2. Proper parameter encoding
-    // 3. Soroban RPC integration
+    // Convert XLM to stroops and back to string (Stellar format)
+    const amountInStroops = Math.floor(amount * 10000000);
+    const amountStr = (amountInStroops / 10000000).toFixed(7);
     
-    const transaction = new StellarSdk.TransactionBuilder(sourceAccount, {
-      fee: StellarSdk.BASE_FEE,
+    console.log(`Amount: ${amount} XLM → ${amountInStroops} stroops → ${amountStr} XLM`);
+    
+    // Send bet amount as payment to betting pool (contract processes via memo)
+    const transaction = new (StellarSdk as any).TransactionBuilder(sourceAccount, {
+      fee: '100',
       networkPassphrase,
     })
-      .addMemo(StellarSdk.Memo.text(`bet-${predictionId}-${prediction ? 'YES' : 'NO'}`))
-      .setTimeout(30)
+      .addOperation(
+        (StellarSdk as any).Operation.payment({
+          destination: SOROBAN_CONFIG.bettingPoolAddress,  // Send to betting pool
+          asset: (StellarSdk as any).Asset.native(),
+          amount: amountStr,  // Use properly formatted amount
+        })
+      )
+      .addMemo((StellarSdk as any).Memo.text(`bet-${predictionId}-${prediction ? 'yes' : 'no'}`))
+      .setTimeout(300)
       .build();
 
     const signedXdr = await signTx(
@@ -73,13 +85,16 @@ export async function placeBetOnContract(
       userPublicKey
     );
 
-    const tx = StellarSdk.TransactionBuilder.fromXDR(signedXdr, networkPassphrase);
+    const tx = (StellarSdk as any).TransactionBuilder.fromXDR(signedXdr, networkPassphrase);
     const result = await server.submitTransaction(tx);
 
     console.log('✅ Bet placed successfully:', result.id);
     return result.id;
-  } catch (error) {
+  } catch (error: any) {
     console.error('❌ Error placing bet on contract:', error);
+    if (error.response?.data) {
+      console.error('Response:', error.response.data);
+    }
     throw error;
   }
 }

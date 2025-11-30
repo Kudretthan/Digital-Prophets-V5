@@ -88,13 +88,13 @@ export function WalletConnect() {
     restoreWallet();
   }, [isClient, freighterInstalled]);
 
-  // Otomatik bakiye yenileme (her 15 saniyede)
+  // Otomatik bakiye yenileme (her 60 saniyede, rate limit'i aşmamak için)
   useEffect(() => {
     if (!wallet?.publicKey) return;
 
     const interval = setInterval(() => {
       refreshWalletBalance(wallet.publicKey);
-    }, 15000);
+    }, 60000);
 
     return () => clearInterval(interval);
   }, [wallet?.publicKey, refreshWalletBalance]);

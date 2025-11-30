@@ -44,28 +44,17 @@ async function fetchBalanceFromHorizon(publicKey: string, network: string): Prom
   const horizonUrl = HORIZON_URLS[network] || HORIZON_URLS.TESTNET;
   
   try {
-    const response = await fetch(`${horizonUrl}/accounts/${publicKey}`);
+    const response = await fetch(`${horizonUrl}/accounts/${publicKey}`, {
+      signal: AbortSignal.timeout(5000), // 5 saniye timeout
+    });
     
     if (!response.ok) {
       if (response.status === 404) {
         console.log('Account not found on', network);
-        
-        // Diğer network'leri dene
-        for (const [netName, url] of Object.entries(HORIZON_URLS)) {
-          if (netName === network) continue;
-          
-          try {
-            const otherResponse = await fetch(`${url}/accounts/${publicKey}`);
-            if (otherResponse.ok) {
-              const data = await otherResponse.json();
-              const nativeBalance = data.balances?.find((b: any) => b.asset_type === 'native');
-              console.log('Found account on', netName, 'with balance:', nativeBalance?.balance);
-              return nativeBalance ? parseFloat(nativeBalance.balance) : 0;
-            }
-          } catch (e) {
-            continue;
-          }
-        }
+        return 0;
+      }
+      if (response.status === 429) {
+        console.warn('Horizon rate limited. Returning cached balance.');
         return 0;
       }
       throw new Error(`Horizon error: ${response.status}`);
